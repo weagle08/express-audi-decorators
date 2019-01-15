@@ -28,6 +28,10 @@ interface IRouteDeclaration {
     params: IParameterDeclaration[];
 }
 
+/**
+ * function decorator
+ * @param path base path for the controller
+ */
 export function Controller(path: string) {
     return (target: any) => {
         let meta = getMeta(target.prototype);
@@ -35,6 +39,10 @@ export function Controller(path: string) {
     };
 }
 
+/**
+ * function decorator
+ * @param path path for get method
+ */
 export function Get(path: string) {
     return (target: any, key: string, descriptor: PropertyDescriptor) => {
         let meta = getMeta(target);
@@ -47,6 +55,10 @@ export function Get(path: string) {
     };
 }
 
+/**
+ * function decorator
+ * @param path path for post method
+ */
 export function Post(path: string) {
     return (target: any, key: string, descriptor: PropertyDescriptor) => {
         let meta = getMeta(target);
@@ -59,6 +71,10 @@ export function Post(path: string) {
     };
 }
 
+/**
+ * function decorator
+ * @param path path for put method
+ */
 export function Put(path: string) {
     return (target: any, key: string, descriptor: PropertyDescriptor) => {
         let meta = getMeta(target);
@@ -71,6 +87,10 @@ export function Put(path: string) {
     };
 }
 
+/**
+ * function decorator
+ * @param path path for delete method
+ */
 export function Delete(path: string) {
     return (target: any, key: string, descriptor: PropertyDescriptor) => {
         let meta = getMeta(target);
@@ -84,6 +104,10 @@ export function Delete(path: string) {
     };
 }
 
+/**
+ * parameter decorator
+ * @param name name of param to pass from request params
+ */
 export function Params(name?: string) {
     return (target: any, key: string, index: number) => {
         let meta = getMeta(target);
@@ -104,6 +128,10 @@ export function Params(name?: string) {
     };
 }
 
+/**
+ * parameter decorator
+ * @param name name of param to pass from request params as number
+ */
 export function NumParam(name: string, isFloat: boolean = false) {
     return (target: any, key: string, index: number) => {
         let meta = getMeta(target);
@@ -125,6 +153,10 @@ export function NumParam(name: string, isFloat: boolean = false) {
     };
 }
 
+/**
+ * parameter decorator
+ * @param name name of param to pass from request query
+ */
 export function Query(name?: string) {
     return (target: any, key: string, index: number) => {
         let meta = getMeta(target);
@@ -145,6 +177,10 @@ export function Query(name?: string) {
     };
 }
 
+/**
+ * parameter decorator
+ * @param name name of param to pass from request query as number
+ */
 export function NumQuery(name: string, isFloat: boolean = false) {
     return (target: any, key: string, index: number) => {
         let meta = getMeta(target);
@@ -166,6 +202,10 @@ export function NumQuery(name: string, isFloat: boolean = false) {
     };
 }
 
+/**
+ * parameter decorator
+ * @param name name of param to pass from request body
+ */
 export function Body(name?: string) {
     return (target: any, key: string, index: number) => {
         let meta = getMeta(target);
@@ -186,6 +226,10 @@ export function Body(name?: string) {
     };
 }
 
+/**
+ * parameter decorator
+ * parameter to pass express Response object as
+ */
 export function Response() {
     return (target: any, key: string, index: number) => {
         let meta = getMeta(target);
@@ -205,6 +249,10 @@ export function Response() {
     };
 }
 
+/**
+ * parameter decorator
+ * parameter to pass express Request object as
+ */
 export function Request() {
     return (target: any, key: string, index: number) => {
         let meta = getMeta(target);
@@ -224,6 +272,10 @@ export function Request() {
     };
 }
 
+/**
+ * parameter decorator
+ * parameter to pass express next function as
+ */
 export function Next() {
     return (target: any, key: string, index: number) => {
         let meta = getMeta(target);
@@ -243,6 +295,10 @@ export function Next() {
     };
 }
 
+/**
+ * function decorator
+ * wraps express route method in try catch and will respond with error result message
+ */
 export function CatchAndSendError() {
     return (target: any, key: string, descriptor: PropertyDescriptor) => {
         const originalMethod = descriptor.value;
@@ -281,6 +337,11 @@ export function CatchAndSendError() {
     };
 }
 
+/**
+ * creates and registeres the given controller type with express
+ * @param app express app or router instance
+ * @param controller Type which is an express controller
+ */
 // tslint:disable-next-line:no-shadowed-variable
 export function registerController(app: Application | Router, controller: any) {
     let instance = Container.instance.get(controller);
