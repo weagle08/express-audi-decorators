@@ -12,7 +12,8 @@ enum ParameterType {
     NUM_QUERY,
     BODY,
     HEADERS,
-    NEXT
+    NEXT,
+    SOURCE
 }
 
 interface IParameterDeclaration {
@@ -295,6 +296,25 @@ export function Next() {
     };
 }
 
+export function Source() {
+    return (target: any, key: string, index: number) => {
+        let meta = getMeta(target);
+        if (meta.routes[key] == null) {
+            meta.routes[key] = {} as IRouteDeclaration;
+        }
+
+        let routeDeclaration = meta.routes[key];
+        if (routeDeclaration.params == null) {
+            routeDeclaration.params = [];
+        }
+
+        routeDeclaration.params.push({
+            index: index,
+            type: ParameterType.SOURCE
+        });
+    };
+}
+
 /**
  * function decorator
  * wraps express route method in try catch and will respond with error result message
@@ -303,7 +323,7 @@ export function CatchAndSendError() {
     return (target: any, key: string, descriptor: PropertyDescriptor) => {
         const originalMethod = descriptor.value;
 
-        descriptor.value = function(...args: any) {
+        descriptor.value = function (...args: any) {
             // if we do not have a response object we cannot handle the error
             let res: Response = null;
             for (let arg of args) {
@@ -409,6 +429,9 @@ function getParameters(req: Request, res: Response, next: NextFunction, params: 
                 break;
             case ParameterType.HEADERS:
                 args[pd.index] = pd.name != null ? req.headers[pd.name] || null : req.headers;
+                break;
+            case ParameterType.SOURCE:
+                args[pd.index] = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
                 break;
             default:
                 args[pd.index] = null;

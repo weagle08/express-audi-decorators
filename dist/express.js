@@ -15,6 +15,7 @@ var ParameterType;
     ParameterType[ParameterType["BODY"] = 6] = "BODY";
     ParameterType[ParameterType["HEADERS"] = 7] = "HEADERS";
     ParameterType[ParameterType["NEXT"] = 8] = "NEXT";
+    ParameterType[ParameterType["SOURCE"] = 9] = "SOURCE";
 })(ParameterType || (ParameterType = {}));
 function Controller(path) {
     return (target) => {
@@ -214,6 +215,23 @@ function Next() {
     };
 }
 exports.Next = Next;
+function Source() {
+    return (target, key, index) => {
+        let meta = getMeta(target);
+        if (meta.routes[key] == null) {
+            meta.routes[key] = {};
+        }
+        let routeDeclaration = meta.routes[key];
+        if (routeDeclaration.params == null) {
+            routeDeclaration.params = [];
+        }
+        routeDeclaration.params.push({
+            index: index,
+            type: ParameterType.SOURCE
+        });
+    };
+}
+exports.Source = Source;
 function CatchAndSendError() {
     return (target, key, descriptor) => {
         const originalMethod = descriptor.value;
@@ -312,6 +330,9 @@ function getParameters(req, res, next, params) {
                 break;
             case ParameterType.HEADERS:
                 args[pd.index] = pd.name != null ? req.headers[pd.name] || null : req.headers;
+                break;
+            case ParameterType.SOURCE:
+                args[pd.index] = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
                 break;
             default:
                 args[pd.index] = null;
