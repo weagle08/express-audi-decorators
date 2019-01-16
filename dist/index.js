@@ -16,5 +16,6 @@ exports.NumQuery = express_1.NumQuery;
 exports.Controller = express_1.Controller;
 exports.CatchAndSendError = express_1.CatchAndSendError;
 exports.Body = express_1.Body;
+exports.Source = express_1.Source;
 
 //# sourceMappingURL=index.js.map
