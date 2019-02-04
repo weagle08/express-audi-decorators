@@ -296,6 +296,10 @@ export function Next() {
     };
 }
 
+/**
+ * parameter decorator
+ * source address from which the request originated
+ */
 export function Source() {
     return (target: any, key: string, index: number) => {
         let meta = getMeta(target);
@@ -323,7 +327,7 @@ export function CatchAndSendError() {
     return (target: any, key: string, descriptor: PropertyDescriptor) => {
         const originalMethod = descriptor.value;
 
-        descriptor.value = function (...args: any) {
+        descriptor.value = function(...args: any) {
             // if we do not have a response object we cannot handle the error
             let res: Response = null;
             for (let arg of args) {
@@ -362,9 +366,9 @@ export function CatchAndSendError() {
  * @param app express app or router instance
  * @param controller Type which is an express controller
  */
-// tslint:disable-next-line:no-shadowed-variable
-export function registerController(app: Application | Router, controller: any) {
-    let instance = Container.instance.get(controller);
+// tslint:disable-next-line:ban-types
+export function registerController(container: Container, app: Application | Router, controller: Function) {
+    let instance = container.get(controller);
     let meta = getMeta(instance);
     let router = Router();
     let url = meta.url;

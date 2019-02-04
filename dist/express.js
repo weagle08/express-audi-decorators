@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const aurelia_dependency_injection_1 = require("aurelia-dependency-injection");
 require("aurelia-polyfills");
 const express_1 = require("express");
 const http_1 = require("http");
@@ -268,8 +267,8 @@ function CatchAndSendError() {
     };
 }
 exports.CatchAndSendError = CatchAndSendError;
-function registerController(app, controller) {
-    let instance = aurelia_dependency_injection_1.Container.instance.get(controller);
+function registerController(container, app, controller) {
+    let instance = container.get(controller);
     let meta = getMeta(instance);
     let router = express_1.Router();
     let url = meta.url;
