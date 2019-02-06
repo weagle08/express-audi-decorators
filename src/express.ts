@@ -33,10 +33,10 @@ interface IRouteDeclaration {
  * function decorator
  * @param path base path for the controller
  */
-export function Controller(path: string) {
+export function Controller(path?: string) {
     return (target: any) => {
         let meta = getMeta(target.prototype);
-        meta.url = path;
+        meta.url = path || '';
     };
 }
 
@@ -44,13 +44,13 @@ export function Controller(path: string) {
  * function decorator
  * @param path path for get method
  */
-export function Get(path: string) {
+export function Get(path?: string) {
     return (target: any, key: string, descriptor: PropertyDescriptor) => {
         let meta = getMeta(target);
         if (meta.routes[key] == null) {
             meta.routes[key] = {} as IRouteDeclaration;
         }
-        meta.routes[key].url = path;
+        meta.routes[key].url = path || '';
         meta.routes[key].method = 'get';
         return;
     };
@@ -60,13 +60,13 @@ export function Get(path: string) {
  * function decorator
  * @param path path for post method
  */
-export function Post(path: string) {
+export function Post(path?: string) {
     return (target: any, key: string, descriptor: PropertyDescriptor) => {
         let meta = getMeta(target);
         if (meta.routes[key] == null) {
             meta.routes[key] = {} as IRouteDeclaration;
         }
-        meta.routes[key].url = path;
+        meta.routes[key].url = path || '';
         meta.routes[key].method = 'post';
         return;
     };
@@ -76,13 +76,13 @@ export function Post(path: string) {
  * function decorator
  * @param path path for put method
  */
-export function Put(path: string) {
+export function Put(path?: string) {
     return (target: any, key: string, descriptor: PropertyDescriptor) => {
         let meta = getMeta(target);
         if (meta.routes[key] == null) {
             meta.routes[key] = {} as IRouteDeclaration;
         }
-        meta.routes[key].url = path;
+        meta.routes[key].url = path || '';
         meta.routes[key].method = 'put';
         return;
     };
@@ -92,13 +92,13 @@ export function Put(path: string) {
  * function decorator
  * @param path path for delete method
  */
-export function Delete(path: string) {
+export function Delete(path?: string) {
     return (target: any, key: string, descriptor: PropertyDescriptor) => {
         let meta = getMeta(target);
         if (meta.routes[key] == null) {
             meta.routes[key] = {} as IRouteDeclaration;
         }
-        meta.routes[key].url = path;
+        meta.routes[key].url = path || '';
         meta.routes[key].method = 'delete';
 
         return;

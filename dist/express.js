@@ -19,7 +19,7 @@ var ParameterType;
 function Controller(path) {
     return (target) => {
         let meta = getMeta(target.prototype);
-        meta.url = path;
+        meta.url = path || '';
     };
 }
 exports.Controller = Controller;
@@ -29,7 +29,7 @@ function Get(path) {
         if (meta.routes[key] == null) {
             meta.routes[key] = {};
         }
-        meta.routes[key].url = path;
+        meta.routes[key].url = path || '';
         meta.routes[key].method = 'get';
         return;
     };
@@ -41,7 +41,7 @@ function Post(path) {
         if (meta.routes[key] == null) {
             meta.routes[key] = {};
         }
-        meta.routes[key].url = path;
+        meta.routes[key].url = path || '';
         meta.routes[key].method = 'post';
         return;
     };
@@ -53,7 +53,7 @@ function Put(path) {
         if (meta.routes[key] == null) {
             meta.routes[key] = {};
         }
-        meta.routes[key].url = path;
+        meta.routes[key].url = path || '';
         meta.routes[key].method = 'put';
         return;
     };
@@ -65,7 +65,7 @@ function Delete(path) {
         if (meta.routes[key] == null) {
             meta.routes[key] = {};
         }
-        meta.routes[key].url = path;
+        meta.routes[key].url = path || '';
         meta.routes[key].method = 'delete';
         return;
     };
