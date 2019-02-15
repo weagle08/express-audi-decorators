@@ -407,7 +407,7 @@ function getParameters(req: Request, res: Response, next: NextFunction, params: 
                 args[pd.index] = next;
                 break;
             case ParameterType.PARAMS:
-                args[pd.index] = pd.name != null ? req.params[pd.name] || null : req.params;
+                args[pd.index] = pd.name != null ? req.params[pd.name] : req.params;
                 break;
             case ParameterType.NUM_PARAM:
                 try {
@@ -418,7 +418,7 @@ function getParameters(req: Request, res: Response, next: NextFunction, params: 
                 }
                 break;
             case ParameterType.QUERY:
-                args[pd.index] = pd.name != null ? req.query[pd.name] || null : req.query;
+                args[pd.index] = pd.name != null ? req.query[pd.name] : req.query;
                 break;
             case ParameterType.NUM_QUERY:
                 try {
@@ -429,10 +429,10 @@ function getParameters(req: Request, res: Response, next: NextFunction, params: 
                 }
                 break;
             case ParameterType.BODY:
-                args[pd.index] = pd.name != null ? req.body[pd.name] || null : req.body;
+                args[pd.index] = pd.name != null ? req.body[pd.name] : req.body;
                 break;
             case ParameterType.HEADERS:
-                args[pd.index] = pd.name != null ? req.headers[pd.name] || null : req.headers;
+                args[pd.index] = pd.name != null ? req.headers[pd.name] : req.headers;
                 break;
             case ParameterType.SOURCE:
                 args[pd.index] = req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
